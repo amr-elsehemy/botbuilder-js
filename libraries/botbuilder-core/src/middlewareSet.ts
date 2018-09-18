@@ -9,43 +9,32 @@ import { Activity, ResourceResponse } from 'botframework-schema';
 import { TurnContext } from './turnContext';
 
 /**
- * Type signature for a return value that can (Optionally) return its value
- * asynchronously using a Promise.
- * 
- * ```TypeScript
- * type Promiseable <T = void> = Promise<T>|T;
- * ``` 
- * @param T (Optional) type of value being returned. This defaults to `void`.
- */
-export type Promiseable <T = void> = Promise<T>|T;
-
-/** 
- * Interface implemented by object based middleware. 
+ * Interface implemented by object based middleware.
  */
 export interface Middleware {
-    onTurn(context: TurnContext, next: () => Promise<void>): Promiseable<void>;
+    onTurn(context: TurnContext, next: () => Promise<void>): Promise<void>;
 }
 
-/** 
- * Signature implemented by function based middleware. 
- * 
+/**
+ * Signature implemented by function based middleware.
+ *
  * ```TypeScript
- * type MiddlewareHandler = (context: TurnContext, next: () => Promise<void>) => Promiseable<void>;
- * ``` 
+ * type MiddlewareHandler = (context: TurnContext, next: () => Promise<void>) => Promise<void>;
+ * ```
  */
-export type MiddlewareHandler = (context: TurnContext, next: () => Promise<void>) => Promiseable<void>;
+export type MiddlewareHandler = (context: TurnContext, next: () => Promise<void>) => Promise<void>;
 
 /**
- * A set of `Middleware` plugins. 
- * 
+ * A set of `Middleware` plugins.
+ *
  * @remarks
- * The set itself is middleware so you can easily package up a set of middleware that can be composed 
- * into an adapter with a single `adapter.use(mySet)` call or even into another middleware set using 
+ * The set itself is middleware so you can easily package up a set of middleware that can be composed
+ * into an adapter with a single `adapter.use(mySet)` call or even into another middleware set using
  * `set.use(mySet)`.
- * 
+ *
  * ```JavaScript
  * const { MiddlewareSet } = require('botbuilder');
- * 
+ *
  * const set = new MiddlewareSet();
  * set.use(async (context, next) => {
  *    console.log(`Leading Edge`);
@@ -59,7 +48,7 @@ export class MiddlewareSet implements Middleware {
 
     /**
      * Creates a new MiddlewareSet instance.
-     * @param middleware Zero or more middleware handlers(s) to register. 
+     * @param middleware Zero or more middleware handlers(s) to register.
      */
     constructor(...middleware: (MiddlewareHandler|Middleware)[]) {
         MiddlewareSet.prototype.use.apply(this, middleware);
@@ -71,7 +60,7 @@ export class MiddlewareSet implements Middleware {
 
     /**
      * Registers middleware handlers(s) with the set.
-     * 
+     *
      * @remarks
      * This example adds a new piece of middleware to a set:
      *
@@ -85,15 +74,16 @@ export class MiddlewareSet implements Middleware {
      * @param middleware One or more middleware handlers(s) to register.
      */
     public use(...middleware: (MiddlewareHandler|Middleware)[]): this {
-        middleware.forEach((plugin) => {
+        middleware.forEach((plugin: any) => {
             if (typeof plugin === 'function') {
                 this.middleware.push(plugin);
             } else if (typeof plugin === 'object' && plugin.onTurn) {
-                this.middleware.push((context, next) => plugin.onTurn(context, next));
+                this.middleware.push((context: TurnContext, next: Function) => plugin.onTurn(context, next));
             } else {
                 throw new Error(`MiddlewareSet.use(): invalid plugin type being added.`);
             }
         });
+
         return this;
     }
 
@@ -102,8 +92,8 @@ export class MiddlewareSet implements Middleware {
      * @param context Context for the current turn of conversation with the user.
      * @param next Function to invoke at the end of the middleware chain.
      */
-    public run(context: TurnContext, next: () => Promiseable<void>): Promise<void> {
-        const handlers = this.middleware.slice();
+    public run(context: TurnContext, next: () => Promise<void>): Promise<void> {
+        const handlers: MiddlewareHandler[] = this.middleware.slice();
         function runNext(i: number): Promise<void> {
             try {
                 if (i < handlers.length) {
@@ -115,6 +105,7 @@ export class MiddlewareSet implements Middleware {
                 return Promise.reject(err);
             }
         }
+
         return runNext(0);
     }
 }

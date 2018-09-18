@@ -20,19 +20,19 @@
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",
   "dependencies": {
+    "@microsoft/recognizers-text-date-time": "^1.0.0",
     "@types/html-entities": "^1.2.16",
     "@types/node": "^9.3.0",
     "@types/request-promise-native": "^1.0.10",
-    "@types/xmldom": "^0.1.29",
-    "botbuilder": "4.0.0-preview1.2",
-    "botframework-luis": "4.0.0-preview1.2",
+    "azure-cognitiveservices-luis-runtime": "^1.0.0",
+    "botbuilder": "^4.0.0-preview1.2",
     "html-entities": "^1.2.1",
+    "moment": "^2.20.1",
+    "ms-rest": "^2.3.6",
     "mstranslator": "^3.0.0",
+    "nock": "^9.6.1",
     "request": "2.83.0",
-    "request-promise-native": "1.0.5",
-    "xmldom": "^0.1.27",
-    "@microsoft/recognizers-text-date-time": "^1.0.0",
-    "moment": "^2.20.1"
+    "request-promise-native": "1.0.5"
   },
   "devDependencies": {
     "@types/mocha": "^2.2.47",
@@ -46,6 +46,7 @@
     "test": "tsc && nyc mocha tests/",
     "build": "tsc",
     "build-docs": "typedoc --theme markdown --entryPoint botbuilder-ai --excludePrivate --includeDeclarations --ignoreCompilerErrors --module amd --out ..\\..\\doc\\botbuilder-ai .\\lib\\index.d.ts --hideGenerator --name \"Bot Builder SDK - AI\" --readme none",
-    "clean": "erase /q lib\\*.*"
+    "clean": "erase /q /s .\\lib",
+    "set-version": "npm version --allow-same-version ${Version}"
   }
 }

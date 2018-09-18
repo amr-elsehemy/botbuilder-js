@@ -1,6 +1,8 @@
 const assert = require('assert');
 const { TurnContext } = require('botbuilder-core');
+const { ChannelValidation } = require('botframework-connector');
 const { BotFrameworkAdapter } = require('../');
+const os = require('os');
 
 const reference = { 
     activityId: '1234', 
@@ -101,9 +103,12 @@ class MockResponse {
         this.body = undefined;
     }
 
-    send(status, body) {
-        assert(!this.ended, `response.send() called after response.end().`);
+    status(status) {
         this.statusCode = status;
+    }
+
+    send(body) {
+        assert(!this.ended, `response.send() called after response.end().`);
         this.body = body;
     }
 
@@ -250,7 +255,7 @@ describe(`BotFrameworkAdapter`, function () {
         adapter.continueConversation(reference, (context) => {
             assert(context, `context not passed.`);
             assert(context.activity, `context has no request.`);
-            assert(context.activity.type === undefined, `request has invalid type.`);
+            assert(context.activity.type === 'event', `request has invalid type.`);
             assert(context.activity.from && context.activity.from.id === reference.user.id, `request has invalid from.id.`);
             assert(context.activity.recipient && context.activity.recipient.id === reference.bot.id, `request has invalid recipient.id.`);
             called = true;
@@ -509,5 +514,32 @@ describe(`BotFrameworkAdapter`, function () {
             assert(err, `error not returned.`);
             done();
         });
+    });
+
+    it(`should create a User-Agent header with the same info as the host machine.`, function (done) {
+        const adapter = new BotFrameworkAdapter();
+        const client = adapter.createConnectorClient('https://example.com');
+        const userAgentHeader = client.userAgentInfo.value;
+        const pjson = require('../package.json');
+        const userAgent = 'Microsoft-BotFramework/3.1 BotBuilder/' + pjson.version + ' (Node.js,Version=' + process.version + '; ' + os.type() + ' ' + os.release() + '; ' + os.arch() + ')';
+        assert(userAgentHeader.includes(userAgent), `ConnectorClient doesn't have user-agent header created by BotFrameworkAdapter or header is incorrect.`);
+        done();
+    });
+
+    it(`should set openIdMetadata property on ChannelValidation`, function (done) {
+        const testEndpoint = "http://rainbows.com";
+        const original = ChannelValidation.OpenIdMetadataEndpoint;
+        const adapter = new BotFrameworkAdapter({openIdMetadata: testEndpoint});
+        assert(testEndpoint === ChannelValidation.OpenIdMetadataEndpoint, `ChannelValidation.OpenIdMetadataEndpoint was not set.`);
+        ChannelValidation.OpenIdMetadataEndpoint = original;
+        done();
+    });
+
+    it(`should set oAuthEndpoint property on connector client`, function (done) {
+        const testEndpoint = "http://rainbows.com";
+        const adapter = new BotFrameworkAdapter({oAuthEndpoint: testEndpoint});
+        const url = adapter.oauthApiUrl();
+        assert(testEndpoint === url, `adapter.oauthApiUrl is incorrect.`);
+        done();
     });
 });

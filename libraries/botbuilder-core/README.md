@@ -1,4 +1,4 @@
-Bot Builder core library. Minimal interfaces and types needed by all components.
+Preview of the v4 version of the Bot Builder toolkit.  
 
 - [Installing](#installing)
 - [Documentation](https://docs.microsoft.com/en-us/azure/bot-service/bot-service-overview-introduction?view=azure-bot-service-4.0)
@@ -9,7 +9,7 @@ Bot Builder core library. Minimal interfaces and types needed by all components.
 To add the preview version of this package to your bot be sure include the @preview tag:
 
 ```bash
-npm install --save botbuilder-core@preview
+npm install --save botbuilder@preview
 ```
 
 While this package is in preview it's possible for updates to include build breaks. To avoid having any updates break your bot it's recommended that you update the dependency table of your bots `package.json` file to lock down the specific version of the package you're using:
@@ -17,7 +17,7 @@ While this package is in preview it's possible for updates to include build brea
 ```JSON
 {
     "dependencies": {
-        "botbuilder-core": "4.0.0-preview1.2"
+        "botbuilder": "4.0.0-preview1.2"
     }
 }
 ```

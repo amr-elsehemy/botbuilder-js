@@ -37,7 +37,7 @@ Simple bot that handles conversation updates.
 Simple echo bot that echoes a user's message back across _different channels_. 
 
 - Discusses the concept of BotState, speficically UserState and ConversationState 
-- These classes are exposed in [`botbuilder`](https://github.com/Microsoft/botbuilder-js/tree/master/libraries/botbuilder), but the source code can be found in [`botbuilder-core-extensions`](https://github.com/Microsoft/botbuilder-js/tree/master/libraries/botbuilder-core-extensions)
+- These classes are exposed in [`botbuilder`](https://github.com/Microsoft/botbuilder-js/tree/master/libraries/botbuilder), but the source code can be found in [`botbuilder-core`](https://github.com/Microsoft/botbuilder-js/tree/master/libraries/botbuilder-core)
 
 ### [single-prompt-bot-es6](./single-prompt-bot-es6)
 
@@ -56,7 +56,7 @@ Shows how to gather user information using multiple prompts with a dialog.
 
 Displays how to create and use Rich Cards using `CardFactory`.
 
-- Introduces Rich Cards and its factory which can be found in [`botbuilder-core-extensions`](https://github.com/Microsoft/botbuilder-js/tree/master/libraries/botbuilder-core-extensions) and is available in `botbuilder`
+- Introduces Rich Cards and its factory which can be found in [`botbuilder-cores`](https://github.com/Microsoft/botbuilder-js/tree/master/libraries/botbuilder-core) and is available in `botbuilder`
 
 ### [qna-maker-bot-es6](./qna-maker-bot-es6)
 
@@ -78,11 +78,11 @@ Demonstrates how to use the Dispatch tool from [BotBuilder-Tools](https://github
 
 ### [echobot-es6-botframework-webchat](./echobot-es6-botframework-webchat)
 
-Demonstrates how to create a bot that lives in the browser using a custom adapter. Also introduces the alternative storage middleware that can be used to store state, such as `CosmosDbStorage`, `BlobStorage` and `TableStorage`.
+Demonstrates how to create a bot that lives in the browser using a custom adapter. Also introduces the alternative storage middleware that can be used to store state, such as `CosmosDbStorage`, and `BlobStorage`.
 
 
 - Introduces creating a [custom adapter](https://github.com/Microsoft/botbuilder-js/blob/master/samples/echobot-es6-botframework-webchat/src/webChatAdapter.js) using [BotFramework-WebChat](https://github.com/Microsoft/BotFramework-WebChat/).
-- Introduces [`CosmosDbStorage`](https://github.com/Microsoft/botbuilder-js/blob/master/doc/botbuilder-azure/classes/botbuilder_azure.cosmosdbstorage.md), [`BlobStorage`](https://github.com/Microsoft/botbuilder-js/blob/master/doc/botbuilder-azure/classes/botbuilder_azure.blobstorage.md) and [`TableStorage`](https://github.com/Microsoft/botbuilder-js/blob/master/doc/botbuilder-azure/classes/botbuilder_azure.tablestorage.md) which are found in the [`botbuilder-azure`](https://github.com/Microsoft/botbuilder-js/tree/master/libraries/botbuilder-azure) library.
+- Introduces [`CosmosDbStorage`](https://github.com/Microsoft/botbuilder-js/blob/master/doc/botbuilder-azure/classes/botbuilder_azure.cosmosdbstorage.md), and [`BlobStorage`](https://github.com/Microsoft/botbuilder-js/blob/master/doc/botbuilder-azure/classes/botbuilder_azure.blobstorage.md) which are found in the [`botbuilder-azure`](https://github.com/Microsoft/botbuilder-js/tree/master/libraries/botbuilder-azure) library.
 
 ### [simple-prompt-bot-es6](./simple-prompt-bot-es6)
 

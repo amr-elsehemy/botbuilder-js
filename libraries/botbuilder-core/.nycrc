@@ -9,8 +9,7 @@
     "**/node_modules/**",
     "**/tests/**",
     "**/coverage/**",
-    "**/*.d.ts",
-    "lib/**/internal.js"
+    "**/*.d.ts"
   ],
   "reporter": [
     "html"
